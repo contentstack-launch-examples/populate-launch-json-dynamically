@@ -1,8 +1,7 @@
 # Dynamic Launch.json Generation During Build Time
 
-This project demonstrates how to dynamically generate a launch.json file during build time on Launch.
+This project demonstrates how to dynamically generate a launch.json file during the build process in Contentstack Launch. This approach allows to manage Launch configuration centrally through Contentstack content types, eliminating the need to hardcode redirects, rewrites, and cache configurations directly in your repository.
 
-The generated launch.json is created automatically so that launch.json code can be managed centrally without hardcoding them.
 
 ## 📂 Project Structure
 
@@ -19,7 +18,21 @@ The generated launch.json is created automatically so that launch.json code can 
 
 ## ⚙️ Setup
 
-### Step 1: Clone and Install
+### Step 1: Content Model Setup
+
+Create the required content types in the stack by following the guide of [Create Content Model](https://www.contentstack.com/docs/developers/content-modeling/about-content-modeling) to manage your Launch configuration:
+
+```bash
+- **Redirects** - for URL redirects
+- **Rewrites** - for URL rewrites
+- **Cache** - for cache priming URLs
+```
+
+### Step 2: Connect Your Stack
+
+Set up your Contentstack Stack connection following the [Connect stack Documentation](https://www.contentstack.com/docs/developers/sdks/content-delivery-sdk/typescript/get-started-with-typescript-delivery-sdk)
+
+### Step 3: Clone and Install
 
 Clone the repository:
 
@@ -34,7 +47,7 @@ Install dependencies:
 npm install
 ```
 
-### Step 2: Environment variables
+### Step 4: Environment variables
 
 Create a `.env.local` file at the root with your stack credentials:
 
@@ -44,7 +57,7 @@ CONTENTSTACK_DELIVERY_TOKEN=your_delivery_token
 CONTENTSTACK_ENVIRONMENT=environment name
 ```
 
-### Step 3: Package.json changes
+### Step 5: Package.json changes
 
 Add a prebuild hook to generate launch.json before build.
 
@@ -62,26 +75,72 @@ Add a prebuild hook to generate launch.json before build.
 - `generate:launch` → generates launch.json
 - `build` → builds the Next.js app
 
-### Step 4: Deployment on Contentstack Launch
+### Step 6: Deploy to Contentstack Launch
 
-When deploying on Launch, the build process will:
+Deploy your project to Launch. The build process automatically generates `launch.json` with your current configuration.
 
-1. Clone the Git repository.
-2. Install dependencies.
-3. Make Changes as per the repo example
-4. Deploy the project on launch with the needed changes
-5. During build it will generate the launch.json file
+## Generated launch.json Structure
 
-## 📄 License
+```json
+{
+  "redirects": [
+    {
+      "source": "/source",
+      "destination": "/destination",
+      "statusCode": 308,
+      "response": {
+        "headers": {
+          "x-powered-by": "launch"
+        }
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/source",
+      "destination": "/destination",
+      "request": {
+        "headers": {
+          "x-api-key": "api-key"
+        }
+      },
+      "response": {
+        "headers": {
+          "x-powered-by": "launch"
+        }
+      }
+    }
+  ],
+  "cache": {
+    "cachePriming": {
+      "urls": ["/delay", "/blog.html", "/new-page.html"]
+    }
+  }
+}
+```
 
-## License
+## Troubleshooting
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/contentstack-launch-examples/contentstack-nuxt-example-starter/blob/main/LICENSE) file for details.
+**Script fails to run:**
 
-## 📞 Support
+- Verify your environment variables are correctly set
+- Ensure your Contentstack credentials have the necessary permissions
 
-For support and questions:
+**Generated launch.json is empty:**
 
-- 📧 **Email**: [Your email]
-- 🐛 **Issues**: [GitHub Issues]
-- 📖 **Documentation**: [Contentstack Docs](https://www.contentstack.com/docs/developers/launch)
+- Verify that you have published entries in your content types
+- Check that the environment field matches your `CONTENTSTACK_ENVIRONMENT` variable
+
+**Build process fails:**
+
+- Check the build logs for specific error messages
+- Verify that all dependencies are installed
+
+**Reference Documentation**
+
+- [Creating Content Models](https://www.contentstack.com/docs/developers/content-modeling/about-content-modeling) 
+- [Stack Setup](https://www.contentstack.com/docs/developers/sdks/content-delivery-sdk/typescript/get-started-with-typescript-delivery-sdk)
+- [Edge URL Redirects](https://www.contentstack.com/docs/developers/launch/edge-url-redirects)
+- [Edge URL Rewrites](https://www.contentstack.com/docs/developers/launch/edge-url-rewrites)
+- [Cache Priming](https://www.contentstack.com/docs/developers/launch/cache-priming)
+
