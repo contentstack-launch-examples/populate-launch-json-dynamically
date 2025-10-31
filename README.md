@@ -23,9 +23,9 @@ This project demonstrates how to dynamically generate a launch.json file during 
 Create the required content types in the stack by following the guide of [Create Content Model](https://www.contentstack.com/docs/developers/content-modeling/about-content-modeling) to manage your Launch configuration:
 
 ```bash
-- Redirects - for URL redirects
-- Rewrites - for URL rewrites
-- Cache - for cache priming URLs
+Redirects - for URL redirects
+Rewrites - for URL rewrites
+Cache - for cache priming URLs
 ```
 
 ### Step 2: Connect Your Stack
