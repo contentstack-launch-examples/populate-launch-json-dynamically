@@ -14,10 +14,10 @@
     "@contentstack/delivery-sdk": "^4.8.0",
     "@contentstack/live-preview-utils": "^3.2.4",
     "ajv": "^8.17.1",
-    "contentstack": "^3.26.0",
+    "contentstack": "^3.26.1",
     "dotenv": "^17.2.0",
     "lucide-react": "^0.525.0",
-    "next": "^16.4.1",
+    "next": "^16.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
